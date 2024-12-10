@@ -1,0 +1,3 @@
+# Ellen's Youtube Channel DBT Repo
+
+The purpose of this project is to model data related to Ellen's Youtube channel so that it's more useful for analysis. Is it overkill? Totally. But sometimes the real analytical treasure is the skills you pick up along the way...
