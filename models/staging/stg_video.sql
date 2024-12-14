@@ -1,6 +1,6 @@
 with videos as (
     select *
-    from raw.youtube_analytics.video
+    from {{ source('raw_analytics', 'videos') }}
 )
 select
     id as video_id,

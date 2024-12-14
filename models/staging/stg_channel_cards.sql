@@ -1,6 +1,6 @@
 with channel_cards as (
     select *
-    from raw.youtube_analytics.channel_cards_a_1
+    from {{ source('raw_analytics', 'channel_cards') }}
 )
 select
     channel_id,

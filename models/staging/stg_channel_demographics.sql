@@ -1,6 +1,6 @@
 with channel_demographics as (
     select *
-    from raw.youtube_analytics.channel_demographics_a_1
+    from {{ source('raw_analytics', 'channel_demographics') }}
 )
 select
     channel_id,

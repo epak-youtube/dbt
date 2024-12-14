@@ -1,0 +1,18 @@
+version: 1
+
+sources:
+    - name: raw_analytics
+      database: raw
+      schema: youtube_analytics
+      tables:
+        - name: channel_basic
+          identifier: channel_basic_a_2
+        
+        - name: videos
+          identifier: video
+        
+        - name: channel_cards
+          identifier: channel_cards_a_1
+        
+        - name: channel_demographics
+          identifier: channel_demographics_a_1
