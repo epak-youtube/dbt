@@ -11,6 +11,7 @@ with channel_basics__video as (
                 ) as published_at_w_tz_appended,
         convert_timezone('America/Chicago', published_at_w_tz_appended) as video_published_at,
         cb.date as calendar_date,
+        datediff(day, video_published_at, calendar_date) as days_since_published,
         cb.live_or_on_demand,
         cb.subscribed_status,
         cc.country_name,
