@@ -5,7 +5,7 @@ with channel_demographics as (
 select
     channel_id,
     nullif(video_id, '') as video_id,
-    date,
+    date as calendar_date,
     live_or_on_demand,
     subscribed_status,
     country_code,
