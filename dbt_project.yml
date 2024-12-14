@@ -36,3 +36,9 @@ models:
     intermediate:
       +materialized: table
       +database: REFINED
+
+seeds:
+  dbt_project:
+    +materialized: seed
+    +database: REFINED
+    +schema: MANUAL_SOURCES
