@@ -19,7 +19,7 @@ select
     id as video_id,
     published_at,
     snippet_channel_id as channel_id,
-    snippet_title as title,
+    snippet_title as video_title,
     content_details_has_custom_thumbnail as has_custom_thumbnail,
     parse_json(snippet_thumbnails) as video_thumbnail_json,
     initcap(privacy_status) as privacy_status,

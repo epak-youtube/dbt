@@ -2,7 +2,7 @@ with channel_basics__video as (
     select
         cb.channel_id,
         cb.video_id,
-        v.title as video_title,
+        v.video_title,
         v.published_at as video_published_at,
         cb.calendar_date,
         datediff(day, video_published_at, calendar_date) as days_since_published,
