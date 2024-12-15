@@ -5,8 +5,8 @@ with channel_traffic__video as (
         v.published_at as video_published_at,
         datediff(day, video_published_at, calendar_date) as days_since_published,
         case
-            when ct.traffic_source_raw = ct.channel_id then 'Channel'
-            when v_source.title is not null then 'Video'
+            when ct.traffic_source_raw = ct.channel_id then 'Organic-Channel'
+            when v_source.title is not null then 'Organic-Video'
             else initcap(replace(ct.traffic_source_raw, '_', ' '))
             end as traffic_source,
         v_source.title as traffic_source_detail_video_title,

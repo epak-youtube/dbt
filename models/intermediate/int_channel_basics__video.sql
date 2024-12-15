@@ -8,6 +8,7 @@ with channel_basics__video as (
         datediff(day, video_published_at, calendar_date) as days_since_published,
         cb.live_or_on_demand,
         cb.subscribed_status,
+        cb.country_code,
         cc.country_name,
         cb.view_count,
         cb.like_count,
