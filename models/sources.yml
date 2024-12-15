@@ -16,3 +16,9 @@ sources:
         
         - name: channel_demographics
           identifier: channel_demographics_a_1
+
+        - name: channel_traffic_sources
+          identifier: channel_traffic_source_a_2
+
+        - name: channel
+          identifier: channel

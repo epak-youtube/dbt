@@ -2,18 +2,13 @@ with channel_basics__video as (
     select
         cb.channel_id,
         cb.video_id,
-        v.title as video_title,
-        v.published_at_utc,
-        dateadd(    -- trick to add a UTC timezone to a timestamp_ntz
-                hour,
-                -1 * datediff(hour, v.published_at_utc::TIMESTAMP_NTZ, convert_timezone('UTC',v.published_at_utc)::timestamp_ntz),
-                convert_timezone('UTC',v.published_at_utc)
-                ) as published_at_w_tz_appended,
-        convert_timezone('America/Chicago', published_at_w_tz_appended) as video_published_at,
-        cb.date as calendar_date,
+        v.video_title,
+        v.published_at as video_published_at,
+        cb.calendar_date,
         datediff(day, video_published_at, calendar_date) as days_since_published,
         cb.live_or_on_demand,
         cb.subscribed_status,
+        cb.country_code,
         cc.country_name,
         cb.view_count,
         cb.like_count,
@@ -29,5 +24,4 @@ with channel_basics__video as (
 )
 select
     *
-    exclude(published_at_utc, published_at_w_tz_appended)
 from channel_basics__video

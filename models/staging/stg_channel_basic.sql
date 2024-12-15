@@ -5,7 +5,7 @@ with channel_basic as (
 select
     channel_id,
     nullif(video_id, '') as video_id,
-    date,
+    date as calendar_date,
     initcap(replace(live_or_on_demand, '_', ' ')) as live_or_on_demand,
     initcap(replace(subscribed_status, '_', ' ')) as subscribed_status,
     country_code,
