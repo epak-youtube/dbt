@@ -5,6 +5,57 @@ sources:
       database: raw
       schema: youtube_analytics
       tables:
+        - name: audience_retention
+          identifier: audience_retention
+
+        - name: caption
+          identifier: caption
+          
+        - name: channel_combined
+          identifier: channel_combined_a_2
+          
+        - name: channel_device
+          identifier: channel_device_os_a_2
+          
+        - name: channel_end_screens
+          identifier: channel_end_screens_a_1
+
+        - name: channel_playback_location
+          identifier: channel_playback_location_a_2
+          
+        - name: channel_province
+          identifier: channel_province_a_2
+          
+        - name: channel_sharing_service
+          identifier: channel_sharing_service_a_1
+          
+        - name: channel_subtitles
+          identifier: channel_subtitles_a_2
+        
+        - name: comment
+          identifier: comment
+        
+        - name: playlist
+          identifier: playlist
+
+        - name: playlist_basic
+          identifier: playlist_basic_a_1
+        
+        - name: playlist_combined
+          identifier: playlist_combined_a_1
+        
+        - name: playlist_device_os
+          identifier: playlist_device_os_a_1
+        
+        - name: playlist_playback_location
+          identifier: playlist_playback_location_a_1
+                  
+        - name: playlist_province
+          identifier: playlist_province_a_1
+                
+        - name: playlist_traffic_source
+          identifier: playlist_traffic_source_a_1
+        
         - name: channel_basic
           identifier: channel_basic_a_2
         

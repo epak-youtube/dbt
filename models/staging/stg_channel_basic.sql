@@ -25,5 +25,6 @@ select
     videos_added_to_playlists,
     videos_removed_from_playlists,
     red_views,
-    red_watch_time_minutes::dec(18, 2) as red_watch_time_in_minutes -- todo: research what "red" watch time means
+    red_watch_time_minutes::dec(18, 2) as red_watch_time_in_minutes, -- todo: research what "red" watch time means
+    _fivetran_synced
 from channel_basic
