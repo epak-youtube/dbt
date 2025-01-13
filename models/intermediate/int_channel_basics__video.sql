@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized = 'incremental',
+        on_schema_change = 'fail'
+        )
+}}
+
 with channel_basics__video as (
     select
         cb.channel_id,
@@ -42,4 +49,8 @@ select
     total_watch_time_in_minutes,
     avg_view_duration_in_seconds,
     _fivetran_synced
-from channel_basics__video
+from channel_basics__video as cbv
+where true
+{% if is_incremental() %}
+  and cbv._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+{% endif %}

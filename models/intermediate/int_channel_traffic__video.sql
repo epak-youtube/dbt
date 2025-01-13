@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized = 'incremental',
+        on_schema_change = 'fail'
+        )
+}}
+
 with channel_traffic__video as (
     select
         ct.*,
@@ -18,7 +25,7 @@ with channel_traffic__video as (
     left join {{ ref("int_video") }} as v on ct.video_id = v.video_id
     left join {{ ref("country_codes_lookup") }} as cc on cc.country_code = ct.country_code
     left join {{ ref("traffic_source_lookup") }} as ts on ts.traffic_source_id = ct.traffic_source_id
-    left join {{ ref("stg_video") }} as v_source on ct.traffic_source_raw = v_source.video_id
+    left join {{ ref("int_video") }} as v_source on ct.traffic_source_raw = v_source.video_id
     left join {{ ref("stg_channel") }} as chan_source on ct.traffic_source_raw = chan_source.channel_id
     where ct.video_id is distinct from 'M8JBkd8KMJA'    -- has no match in the videos table and only 2 views so just removing
 )
@@ -43,8 +50,8 @@ select
     red_view_count,
     red_watch_time_in_minutes,
     _fivetran_synced
-from channel_traffic__video
+from channel_traffic__video as ctv
 where true
 {% if is_incremental() %}
-  and cb._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and ctv._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
 {% endif %}
