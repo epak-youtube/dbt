@@ -10,7 +10,7 @@ with channel_basics__video as (
         cb.live_or_on_demand,
         cb.subscribed_status,
         cb.country_code,
-        cc.country_name,
+        cb.country_name,
         cb.total_view_count,
         cb.like_count,
         cb.dislike_count,
@@ -19,10 +19,8 @@ with channel_basics__video as (
         cb.total_watch_time_in_minutes,
         cb.avg_view_duration_in_seconds,
         cb._fivetran_synced
-    from {{ ref("stg_channel_basic") }} as cb
+    from {{ ref("int_channel_basics") }} as cb
     left join {{ ref("int_video") }} as v on cb.video_id = v.video_id
-    left join {{ ref("country_codes_lookup") }} as cc on cc.country_code = cb.country_code
-    where cb.video_id is distinct from 'M8JBkd8KMJA'    -- has no match in the videos table and only 2 views so just removing
 )
 select
     channel_id,
