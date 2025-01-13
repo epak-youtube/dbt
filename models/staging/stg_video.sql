@@ -1,18 +1,20 @@
 with videos as (
     select
+        *
+    from {{ source('raw_analytics', 'videos') }}
+),
+-- the purpose of this cte is to do a couple of the more complex transformations; no business logic applied
+videos_with_calcs as (
+    select
         *,
         -- fields to parse video duration from content_details_duration; helper columns will not be materialized
         regexp_replace(content_details_duration, '[PTS]') video_duration_trimmed,
         zeroifnull(try_to_number(split_part(video_duration_trimmed, 'M', 1))) as video_duration_mins,
-        zeroifnull(try_to_number(split_part(video_duration_trimmed, 'M', 2))) as video_duration_secs,
-        video_duration_mins * 60  + video_duration_secs as video_duration_in_seconds
-    from {{ source('raw_analytics', 'videos') }}
-),
--- todo: create an append_timezone user-defined function and refactor this away
-append_timezone as (
-    select *,
+        zeroifnull(try_to_number(splgit it_part(video_duration_trimmed, 'M', 2))) as video_duration_secs,
+        video_duration_mins * 60  + video_duration_secs as video_duration_in_seconds,
         -- trick to add a UTC timezone to a timestamp_ntz, which i then convert to central time
         -- published_at_utc_no_timezone and published_at_w_tz_appended are just helper columns to make logic easier to follow, but will not be materialized
+        -- todo: create an append_timezone user-defined function and refactor this away
         snippet_published_at as published_at_utc_no_timezone,
         dateadd(
                 hour,
@@ -39,4 +41,4 @@ select
     statistics_comment_count as comment_count,
     statistics_favorite_count as favorite_count,
     _fivetran_synced
-from append_timezone
+from videos_with_calcs
