@@ -9,7 +9,7 @@ select
     initcap(replace(live_or_on_demand, '_', ' ')) as live_or_on_demand,
     initcap(replace(subscribed_status, '_', ' ')) as subscribed_status,
     traffic_source_type as traffic_source_id,
-    traffic_source_detail as traffic_source_raw,
+    traffic_source_detail as traffic_source_detail_raw,
     country_code,
     views as view_count,
     watch_time_minutes::dec(18, 2) as watch_time_in_minutes,
@@ -19,3 +19,4 @@ select
     red_watch_time_minutes::dec(18, 2) as red_watch_time_in_minutes, -- todo: research what "red" watch time means
     _fivetran_synced
 from channel_traffic_sources
+where video_id is distinct from 'M8JBkd8KMJA'    -- has no match in the videos table and only 2 views so just removing
