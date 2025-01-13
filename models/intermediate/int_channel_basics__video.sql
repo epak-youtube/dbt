@@ -10,7 +10,7 @@ with channel_basics__video as (
         cb.subscribed_status,
         cb.country_code,
         cc.country_name,
-        cb.view_count,
+        cb.total_view_count,
         cb.like_count,
         cb.dislike_count,
         cb.subscriber_gain_count,
