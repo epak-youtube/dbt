@@ -21,7 +21,7 @@ videos_with_calcs as (
                 -1 * datediff(hour, published_at_utc_no_timezone::timestamp_ntz, convert_timezone('UTC', published_at_utc_no_timezone)::timestamp_ntz),
                 convert_timezone('UTC', published_at_utc_no_timezone)
                 ) as published_at_w_tz_appended,
-        convert_timezone('America/Chicago', published_at_w_tz_appended) as published_at
+        convert_timezone('America/Los_Angeles', published_at_w_tz_appended) as published_at
     from videos
 )
 select
