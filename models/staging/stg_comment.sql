@@ -4,8 +4,8 @@ with comment as (
 )
 select
     id as comment_id,
-    convert_timezone('America/Chicago', snippet_published_at) as comment_published_at,
-    convert_timezone('America/Chicago', snippet_updated_at) as updated_at,
+    convert_timezone('America/Los_Angeles', snippet_published_at) as comment_published_at,
+    convert_timezone('America/Los_Angeles', snippet_updated_at) as updated_at,
     video_id,
     snippet_text_display as comment_text,
     is_public,
