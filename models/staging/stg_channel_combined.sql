@@ -16,7 +16,7 @@ select
     views as view_count,
     watch_time_minutes::dec(18, 4) as watch_time_in_minutes,
     average_view_duration_seconds::dec(18, 4) as average_view_duration_in_seconds,
-    average_view_duration_percentage::dec(18, 4) as average_view_duration_percentage,
+    (average_view_duration_percentage / 100)::dec(18, 4) as average_view_duration_percentage,   -- raw data between 0-100; convert to decimal between 0-1 for easier downstream processing
     red_views as red_view_count,
     red_watch_time_minutes::dec(18, 4) as red_view_watch_time_in_minutes,
     _fivetran_synced

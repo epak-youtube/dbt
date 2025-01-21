@@ -5,7 +5,15 @@
         )
 }}
 
-with channel_basics__video as (
+with channel_basics as (
+    select *
+    from {{ ref("int_channel_basics") }}
+),
+video as (
+    select *
+    from {{ ref("int_video_current_record") }}
+),
+channel_basics__video as (
     select
         cb.channel_id,
         cb.video_id,
@@ -26,8 +34,8 @@ with channel_basics__video as (
         cb.total_watch_time_in_minutes,
         cb.avg_view_duration_in_seconds,
         cb._fivetran_synced
-    from {{ ref("int_channel_basics") }} as cb
-    left join {{ ref("int_video") }} as v on cb.video_id = v.video_id
+    from channel_basics as cb
+    left join video as v on cb.video_id = v.video_id
 )
 select
     channel_id,
