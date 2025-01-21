@@ -5,7 +5,19 @@
         )
 }}
 
-with channel_traffic__video as (
+with channel_traffic as (
+    select *
+    from {{ ref("int_channel_traffic") }}
+),
+video as (
+    select *
+    from {{ ref("int_video_current_record") }}
+),
+channel as (
+    select *
+    from {{ ref("stg_channel") }}
+),
+channel_traffic__video as (
     select
         ct.*,
         v.video_title,
@@ -18,10 +30,10 @@ with channel_traffic__video as (
             v_source.video_title,
             case when ct.traffic_source_name in ('Suggested videos', 'Interactive video endscreen', 'Video cards and annotations') and v_source.video_title is null then 'Other Video' end,
             initcap(replace(ct.traffic_source_detail_raw, '_', ' '))) as traffic_source_detail
-    from {{ ref("int_channel_traffic") }} as ct
-    left join {{ ref("int_video") }} as v on ct.video_id = v.video_id
-    left join {{ ref("int_video") }} as v_source on ct.traffic_source_detail_raw = v_source.video_id
-    left join {{ ref("stg_channel") }} as chan_source on ct.traffic_source_detail_raw = chan_source.channel_id
+    from channel_traffic as ct
+    left join video as v on ct.video_id = v.video_id
+    left join video as v_source on ct.traffic_source_detail_raw = v_source.video_id
+    left join channel as chan_source on ct.traffic_source_detail_raw = chan_source.channel_id
 )
 select
     channel_id,

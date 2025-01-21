@@ -11,8 +11,7 @@ with audience_retention as (
 ),
 video as (
     select *
-    from {{ ref("int_video") }}
-    qualify row_number() over (partition by video_id order by _fivetran_synced desc) = 1    -- get the most recent record for each video
+    from {{ ref("int_video_current_record") }}
 ),
 audience_retention__video as (
     select
