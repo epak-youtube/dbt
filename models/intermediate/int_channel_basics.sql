@@ -40,6 +40,5 @@ select
 from channel_basics cb
 where true
 {% if is_incremental() %}
-  and false
   and cb._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
 {% endif %}
