@@ -257,7 +257,7 @@ models:
         data_type: timestamp_tz
 
   - name: stg_channel_cards
-    description: Video and subscriber stats from Youtube Analytics, cut by a number of different dimensions
+    description: Data from Youtube Analytics on the clickthrough rates for the embedded links within the video
     tests:
       - unique:
           column_name: "video_id || '-' || card_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code"
