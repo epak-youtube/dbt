@@ -1,7 +1,7 @@
 {{
     config(
         materialized = 'incremental',
-        full_refresh=false,
+        full_refresh = false,
         on_schema_change = 'fail'
         )
 }}
