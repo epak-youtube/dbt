@@ -471,3 +471,82 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+  - name: stg_channel_demographics
+    description: Data from Youtube Analytics breaking down our viewers' demographics
+    tests:
+      - unique:
+          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || gender || '-' || age_group"
+    columns:
+      - name: channel_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_channel')
+              field: channel_id
+        data_type: varchar
+      - name: video_id
+        tests:
+          - relationships:
+              to: ref('stg_video')
+              field: video_id
+              config:
+                severity: warn
+                warn_if: ">0"
+        data_type: varchar
+      - name: calendar_date
+        description: The date in Pacific time that the video was viewed
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: date('2024-10-31')
+              strictly: false
+        data_type: date
+      - name: live_or_on_demand
+        tests:
+          - not_null
+          - accepted_values:
+              name: unexpected_live_on_demand_value
+              values: ['Live', 'On Demand']
+        data_type: number
+      - name: subscribed_status
+        tests:
+          - not_null
+          - accepted_values:
+              name: unexpected_subscription_status
+              values: ['Subscribed', 'Not Subscribed', 'Unknown']
+        data_type: varchar
+      - name: country_code
+        tests:
+          - not_null
+          - relationships:
+              to: ref('country_codes_lookup')
+              field: country_code
+        data_type: varchar
+      - name: gender
+        tests:
+          - not_null
+          - accepted_values:
+              name: unexpected_gender_dont_at_me
+              values: ['Male', 'Female', 'User Specified']
+        data_type: varchar
+      - name: age_group
+        tests:
+          - not_null
+          - accepted_values:
+              name: unexpected_age_group
+              values: ['A. 13-17', 'B. 18-24', 'C. 25-34', 'D. 35-44', 'E. 45-54', 'F. 55-64', 'G. 65+']
+        data_type: varchar
+      - name: share_of_views_this_video_day
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+              strictly: false
+              config:
+                warn_if: "> 0.25"
+        data_type: number
+      - name: _fivetran_synced
+        tests:
+          - not_null
+        data_type: timestamp_tz
