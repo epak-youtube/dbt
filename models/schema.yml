@@ -668,7 +668,7 @@ models:
           - not_null
         data_type: timestamp_tz
   - name: stg_channel_end_screens
-    description: abc123
+    description: Data from Youtube Analytics showing the clickthrough rate of links presented at the end of the video
     tests:
       - unique:
           column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || end_screen_element_id"
