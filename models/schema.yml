@@ -285,6 +285,9 @@ models:
       - name: card_type
         tests:
           - not_null
+          - relationships:
+              to: ref('card_types')
+              field: id
         data_type: number
       - name: calendar_date
         description: The date in Pacific time that the video was viewed
