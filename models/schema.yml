@@ -1453,7 +1453,50 @@ models:
               min_value: 0
               strictly: false
         data_type: number
-
+      - name: _fivetran_synced
+        tests:
+          - not_null
+        data_type: timestamp_tz
+        
+  - name: int_audience_retention__video
+    description: Joined audience retention and video data from Youtube Analytics
+    tests:
+      - unique:
+          column_name: "video_id || '-' || calendar_date || '-' || percent_of_video_elapsed"
+    columns:
+      - name: channel_id
+        data_type: varchar
+      - name: video_id
+        description: The ID of the video that this data is for
+        tests:
+          - relationships:
+              to: ref('stg_video')
+              field: video_id
+        data_type: varchar
+      - name: video_title
+        data_type: varchar
+      - name: video_published_at
+        data_type: timestamp_tz
+      - name: video_category
+        data_type: varchar
+      - name: video_thumbnail_url
+        data_type: varchar
+      - name: video_duration_in_seconds
+        data_type: number
+      - name: calendar_date
+        data_type: date
+      - name: percent_of_video_elapsed
+        data_type: number
+      - name: video_timestamp_in_seconds
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: true
+        data_type: number
+      - name: percent_watch_ratio
+        data_type: number
+      - name: relative_retention_performance
+        data_type: number
       - name: _fivetran_synced
         tests:
           - not_null
