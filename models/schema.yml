@@ -1360,3 +1360,101 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+  - name: stg_video
+    description: Video data from Youtube Analytics
+    tests:
+      - unique:
+          column_name: video_id
+    columns:
+      - name: video_id
+        tests:
+          - not_null
+        data_type: varchar
+      - name: published_at
+        tests:
+          - not_null
+        data_type: timestamp_tz
+      - name: channel_id
+        description: The ID of the channel
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_channel')
+              field: channel_id
+        data_type: varchar
+      - name: video_title
+        tests:
+          - not_null
+        data_type: varchar
+      - name: video_description
+        data_type: varchar
+      - name: category_id
+        tests:
+          - not_null
+          - relationships:
+              name: unexpected_category_id
+              to: ref('category_id_lookup')
+              field: category_id
+        data_type: number
+      - name: video_duration_in_seconds
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        data_type: number
+      - name: has_custom_thumbnail
+        tests:
+          - not_null
+        data_type: boolean
+      - name: video_thumbnail_json
+        tests:
+          - not_null
+        data_type: variant
+      - name: privacy_status
+        tests:
+          - not_null
+          - accepted_values:
+              name: unexpected_privacy_status
+              values: ['Public', 'Private', 'Unlisted']
+        data_type: varchar
+      - name: view_count
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        data_type: number
+      - name: like_count
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        data_type: number
+      - name: dislike_count
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        data_type: number
+      - name: comment_count
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        data_type: number
+      - name: favorite_count
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        data_type: number
+
+      - name: _fivetran_synced
+        tests:
+          - not_null
+        data_type: timestamp_tz
