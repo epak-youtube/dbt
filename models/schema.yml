@@ -1322,12 +1322,15 @@ models:
         tests:
           - not_null:
               where: "parent_comment_id is null"
+        data_type: boolean
       - name: commenter_display_name
         tests:
           - not_null
+        data_type: varchar
       - name: commenter_channel_url
         tests:
           - not_null
+        data_type: varchar
       - name: parent_comment_id
         tests:
           - relationships:
@@ -1335,6 +1338,7 @@ models:
               to: ref('stg_comment')
               field: comment_id
               where: "parent_comment_id is not null"
+        data_type: varchar
       - name: moderation_status
       - name: count_likes
         tests:
