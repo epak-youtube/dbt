@@ -29,7 +29,7 @@ select
     published_at,
     snippet_channel_id as channel_id,
     snippet_title as video_title,
-    snippet_description as video_description,
+    nullif(snippet_description, '') as video_description,
     snippet_category_id as category_id,
     video_duration_in_seconds,
     content_details_has_custom_thumbnail as has_custom_thumbnail,

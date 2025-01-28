@@ -9,7 +9,7 @@ select
     initcap(replace(live_or_on_demand, '_', ' ')) as live_or_on_demand,
     initcap(replace(subscribed_status, '_', ' ')) as subscribed_status,
     traffic_source_type as traffic_source_id,
-    traffic_source_detail as traffic_source_detail_raw,
+    nullif(traffic_source_detail, '') as traffic_source_detail_raw,
     country_code,
     views as view_count,
     watch_time_minutes::dec(18, 2) as watch_time_in_minutes,

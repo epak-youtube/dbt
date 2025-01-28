@@ -10,7 +10,7 @@ select
     initcap(replace(live_or_on_demand, '_', ' ')) as live_or_on_demand,
     initcap(replace(subscribed_status, '_', ' ')) as subscribed_status,
     end_screen_element_type as end_screen_element_type_id,
-    end_screen_element_id,
+    try_to_number(end_screen_element_id, 38, 0) as end_screen_element_id,
     end_screen_element_clicks,
     end_screen_element_impressions,
     (end_screen_element_click_rate / 100)::dec(18,4) as end_screen_element_click_rate,
