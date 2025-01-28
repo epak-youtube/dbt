@@ -1287,3 +1287,72 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+  - name: stg_comment
+    description: Comments left on our videos from Youtube Analytics
+    tests:
+      - unique:
+          column_name: comment_id
+    columns:
+      - name: comment_id
+        tests:
+          - not_null
+        data_type: varchar
+      - name: comment_published_at
+        tests:
+          - not_null
+        data_type: timestamp_tz
+      - name: updated_at
+        tests:
+          - not_null
+        data_type: timestamp_tz
+      - name: video_id
+        tests:
+          - relationships:
+              to: ref('stg_video')
+              field: video_id
+              config:
+                severity: warn
+                warn_if: ">0"
+        data_type: varchar
+      - name: comment_text
+        tests:
+          - not_null
+        data_type: varchar
+      - name: is_public
+        tests:
+          - not_null:
+              where: "parent_comment_id is null"
+      - name: commenter_display_name
+        tests:
+          - not_null
+      - name: commenter_channel_url
+        tests:
+          - not_null
+      - name: parent_comment_id
+        tests:
+          - relationships:
+              name: unexpected_parent_comment_id
+              to: ref('stg_comment')
+              field: comment_id
+              where: "parent_comment_id is not null"
+      - name: moderation_status
+      - name: count_likes
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+        data_type: number
+      - name: count_replies
+        tests:
+          - not_null:
+              where: "parent_comment_id is null"
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+              where: "parent_comment_id is null"
+        data_type: number
+      - name: _fivetran_synced
+        tests:
+          - not_null
+        data_type: timestamp_tz
