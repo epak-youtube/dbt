@@ -55,7 +55,7 @@ models:
     description: Caption text data from Youtube Analytics
     tests:
       - unique:
-          column_name: "video_id || '-' || start_time_seconds"
+          column_name: id
     columns:
       - name: video_id
         description: The ID of the video that this data is for
@@ -88,12 +88,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
 
   - name: stg_channel_basic
     description: Video and subscriber stats from Youtube Analytics, cut by a number of different dimensions
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code"
+          column_name: id
     columns:
       - name: channel_id
         description: The ID of the channel
@@ -259,6 +263,10 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
 
   - name: stg_channel_cards
     description: Data from Youtube Analytics on the clickthrough rates for the embedded links within the video
@@ -354,6 +362,7 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      
   - name: stg_channel_combined
     description: Data from Youtube Analytics showing how viewers are finding us and what technology they are watching on
     tests:
