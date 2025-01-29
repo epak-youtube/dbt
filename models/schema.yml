@@ -5,7 +5,7 @@ models:
     description: This report from Youtube Analytics shows the retention of videos over time, with timestamps expressed as a percent of the video.
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || percent_of_video_elapsed"
+          column_name: id
     columns:
       - name: video_id
         description: The ID of the video that this data is for
@@ -46,6 +46,10 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
 
   - name: stg_caption
     description: Caption text data from Youtube Analytics
