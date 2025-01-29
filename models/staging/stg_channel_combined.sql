@@ -19,5 +19,16 @@ select
     (average_view_duration_percentage / 100)::dec(18, 4) as average_view_duration_percentage,   -- raw data between 0-100; convert to decimal between 0-1 for easier downstream processing
     red_views as red_view_count,
     red_watch_time_minutes::dec(18, 4) as red_view_watch_time_in_minutes,
-    _fivetran_synced
+    _fivetran_synced,
+    {{ build_unique_key([
+        'video_id',
+        'calendar_date',
+        'live_or_on_demand',
+        'subscribed_status',
+        'country_code',
+        'playback_location_type_id',
+        'traffic_source_type_id',
+        'device_type_id',
+        'operating_system_id'
+        ]) }} as id
 from channel_combined

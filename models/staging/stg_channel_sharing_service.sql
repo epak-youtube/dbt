@@ -11,5 +11,13 @@ select
     initcap(replace(live_or_on_demand, '_', ' ')) as live_or_on_demand,
     initcap(replace(subscribed_status, '_', ' ')) as subscribed_status,
     shares as share_count,
-    _fivetran_synced
+    _fivetran_synced,
+    {{ build_unique_key([
+        'video_id',
+        'calendar_date',
+        'live_or_on_demand',
+        'subscribed_status',
+        'country_code',
+        'sharing_service_id'
+        ]) }} as id
 from channel_sharing_service

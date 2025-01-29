@@ -17,5 +17,14 @@ select
     (average_view_duration_percentage / 100)::dec(18, 4) as average_view_duration_percentage,
     red_views as red_view_count,
     red_watch_time_minutes::dec(18, 2) as red_watch_time_in_minutes,
-    _fivetran_synced
+    _fivetran_synced,
+    {{ build_unique_key([
+        'video_id',
+        'calendar_date',
+        'live_or_on_demand',
+        'subscribed_status',
+        'country_code',
+        'playback_location_type_id',
+        'playback_location_detail'
+        ]) }} as id
 from channel_playback_location

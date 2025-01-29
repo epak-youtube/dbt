@@ -21,5 +21,14 @@ select
         else null
         end as age_group,
     (views_percentage / 100)::dec(18,6) as share_of_views_this_video_day,
-    _fivetran_synced
+    _fivetran_synced,
+    {{ build_unique_key([
+        'video_id',
+        'calendar_date',
+        'live_or_on_demand',
+        'subscribed_status',
+        'country_code',
+        'gender',
+        'age_group'
+        ]) }} as id
 from channel_demographics

@@ -15,5 +15,13 @@ select
     card_clicks,
     card_teaser_impressions,
     card_teaser_clicks,
-    _fivetran_synced
+    _fivetran_synced,
+    {{ build_unique_key([
+        'video_id',
+        'card_id',
+        'calendar_date',
+        'live_or_on_demand',
+        'subscribed_status',
+        'country_code'
+        ]) }} as id
 from channel_cards
