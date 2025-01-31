@@ -16,6 +16,7 @@ video as (
 ),
 channel_basics__video as (
     select
+        cb.id,
         cb.channel_id,
         cb.video_id,
         v.video_title,
@@ -34,32 +35,16 @@ channel_basics__video as (
         cb.subscribers_lost_count,
         cb.total_watch_time_in_minutes,
         cb.avg_view_duration_in_seconds,
-        cb._fivetran_synced
+        cb.record_effective_start_timestamp,
+        cb.record_effective_end_timestamp,
+        cb.is_deleted
     from channel_basics as cb
     left join video as v on cb.video_id = v.video_id
 )
 select
-    channel_id,
-    video_id,
-    video_title,
-    video_published_at,
-    video_category,
-    calendar_date,
-    days_since_published,
-    live_or_on_demand,
-    subscribed_status,
-    country_code,
-    country_name,
-    total_view_count,
-    like_count,
-    dislike_count,
-    subscriber_gain_count,
-    subscribers_lost_count,
-    total_watch_time_in_minutes,
-    avg_view_duration_in_seconds,
-    _fivetran_synced
+    *
 from channel_basics__video as cbv
 where true
 {% if is_incremental() %}
-  and cbv._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and cbv.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

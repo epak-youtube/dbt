@@ -8,7 +8,7 @@
 
 with channel_combined as (
     select *
-    from {{ ref("stg_channel_combined") }}
+    from {{ ref("stg_channel_combined_hist") }}
 ),
 playback_location_types as (
     select *
@@ -32,6 +32,7 @@ operating_system as (
 ),
 all_data as (
     select
+        chc.id,
         chc.channel_id,
         chc.video_id,
         chc.calendar_date,
@@ -52,7 +53,9 @@ all_data as (
         chc.average_view_duration_in_seconds,
         chc.red_view_count,
         chc.red_view_watch_time_in_minutes,
-        chc._fivetran_synced
+        chc.record_effective_start_timestamp,
+        chc.record_effective_end_timestamp,
+        chc.is_deleted
     from channel_combined as chc
     left join playback_location_types as plt on chc.playback_location_type_id = plt.id
     left join country_codes as cc on chc.country_code = cc.country_code
@@ -65,5 +68,5 @@ from all_data as ad
 
 where true
 {% if is_incremental() %}
-  and ad._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and ad.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

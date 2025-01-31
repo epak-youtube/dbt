@@ -5,7 +5,7 @@ models:
     description: This report from Youtube Analytics shows the retention of videos over time, with timestamps expressed as a percent of the video.
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || percent_of_video_elapsed"
+          column_name: id
     columns:
       - name: video_id
         description: The ID of the video that this data is for
@@ -46,12 +46,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
 
   - name: stg_caption
     description: Caption text data from Youtube Analytics
     tests:
       - unique:
-          column_name: "video_id || '-' || start_time_seconds"
+          column_name: id
     columns:
       - name: video_id
         description: The ID of the video that this data is for
@@ -84,12 +88,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
 
   - name: stg_channel_basic
     description: Video and subscriber stats from Youtube Analytics, cut by a number of different dimensions
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code"
+          column_name: id
     columns:
       - name: channel_id
         description: The ID of the channel
@@ -255,12 +263,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
 
   - name: stg_channel_cards
     description: Data from Youtube Analytics on the clickthrough rates for the embedded links within the video
     tests:
       - unique:
-          column_name: "video_id || '-' || card_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -350,11 +362,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_channel_combined
     description: Data from Youtube Analytics showing how viewers are finding us and what technology they are watching on
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || playback_location_type_id || '-' || traffic_source_type_id || '-' || device_type_id || '-' || operating_system_id"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -474,11 +491,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_channel_demographics
     description: Data from Youtube Analytics breaking down our viewers' demographics
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || gender || '-' || age_group"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -553,11 +575,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+
   - name: stg_channel_device
     description: Data from Youtube Analytics showing the technology they are watching on
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || device_type_id || '-' || operating_system_id"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -670,11 +697,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_channel_end_screens
     description: Data from Youtube Analytics showing the clickthrough rate of links presented at the end of the video
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || end_screen_element_id"
+          column_name: id
       - dbt_expectations.expect_column_pair_values_A_to_be_greater_than_B:
           column_A: end_screen_element_impressions
           column_B: end_screen_element_clicks
@@ -765,11 +797,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_channel_playback_location
     description: Data from Youtube Analytics showing how viewers are finding us
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || playback_location_type_id || '-' || playback_location_detail"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -879,11 +916,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_channel_province
     description: Data from Youtube Analytics showing which states our viewers are coming from
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || province_code"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -976,11 +1018,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_channel_sharing_service
     description: Data from Youtube Analytics identifying the services that are used to share videos
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || sharing_service_id"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -1048,11 +1095,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_channel_subtitles
     description: Data from Youtube Analytics showing the subtitle languages that users are using when watching our videos
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || subtitle_language || '-' || subtitle_language_autotranslated"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -1170,11 +1222,16 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_channel_traffic
     description: Data from Youtube Analytics showing how our customers found our videos
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code || '-' || traffic_source_id || '-' || traffic_source_detail_raw"
+          column_name: id
     columns:
       - name: channel_id
         tests:
@@ -1287,6 +1344,11 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      - name: id
+        description: Unique key for this model
+        tests:
+          - not_null
+      
   - name: stg_comment
     description: Comments left on our videos from Youtube Analytics
     tests:
@@ -1360,6 +1422,7 @@ models:
         tests:
           - not_null
         data_type: timestamp_tz
+      
   - name: stg_video
     description: Video data from Youtube Analytics
     tests:

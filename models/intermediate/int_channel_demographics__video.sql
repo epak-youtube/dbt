@@ -28,6 +28,7 @@ views_by_video_day as (
 ),
 all_data as (
     select
+        cd.id,
         cd.channel_id,
         cd.video_id,
         cd.calendar_date,
@@ -44,7 +45,9 @@ all_data as (
         However, treat this as an estimate because the sources don't align perfectly; for example, channel_basics says a video had 21 views, but view shares are divisible by 5% (inferring 20 views)
         #}
         (cd.share_of_views_this_video_day * total_view_count_this_video_day)::dec(18, 2) as view_count_estimated,
-        cd._fivetran_synced
+        cd.record_effective_start_timestamp,
+        cd.record_effective_end_timestamp,
+        cd.is_deleted
     from channel_demographics as cd
     left join views_by_video_day as vvd on cd.video_id = vvd.video_id
         and cd.calendar_date = vvd.calendar_date
@@ -54,5 +57,5 @@ from all_data as ad
 where true
 
 {% if is_incremental() %}
-  and ad._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and ad.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

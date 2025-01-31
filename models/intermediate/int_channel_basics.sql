@@ -8,6 +8,7 @@
 
 with channel_basics as (
     select
+        cb.id,
         cb.channel_id,
         cb.video_id,
         cb.calendar_date,
@@ -31,8 +32,10 @@ with channel_basics as (
         cb.videos_added_to_playlists,
         cb.videos_removed_from_playlists,
         cb.red_view_count,
-        cb._fivetran_synced
-    from {{ ref("stg_channel_basic") }} as cb
+        cb.record_effective_start_timestamp,
+        cb.record_effective_end_timestamp,
+        cb.is_deleted
+    from {{ ref("stg_channel_basic_hist") }} as cb
     left join {{ ref("country_codes_lookup") }} as cc on cc.country_code = cb.country_code
     where cb.video_id is distinct from 'M8JBkd8KMJA'    -- has no match in the videos table and only 2 views so just removing
 )
@@ -41,5 +44,5 @@ select
 from channel_basics cb
 where true
 {% if is_incremental() %}
-  and cb._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and cb.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

@@ -16,7 +16,8 @@ video as (
 ),
 channel as (
     select *
-    from {{ ref("stg_channel") }}
+    from {{ ref("stg_channel_hist") }}
+    where record_effective_end_timestamp is null
 ),
 channel_traffic__video as (
     select
@@ -37,6 +38,7 @@ channel_traffic__video as (
     left join channel as chan_source on ct.traffic_source_detail_raw = chan_source.channel_id
 )
 select
+    id,
     channel_id,
     video_id,
     video_title,
@@ -56,9 +58,11 @@ select
     average_view_duration_in_seconds,
     red_view_count,
     red_watch_time_in_minutes,
-    _fivetran_synced
+    record_effective_start_timestamp,
+    record_effective_end_timestamp,
+    is_deleted
 from channel_traffic__video as ctv
 where true
 {% if is_incremental() %}
-  and ctv._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and ctv.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

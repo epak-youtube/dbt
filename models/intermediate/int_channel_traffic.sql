@@ -8,6 +8,7 @@
 
 with channel_traffic as (
     select
+        ct.id,
         ct.channel_id,
         ct.video_id,
         ct.calendar_date,
@@ -24,8 +25,10 @@ with channel_traffic as (
         ct.average_view_duration_in_seconds,
         ct.red_view_count,
         ct.red_watch_time_in_minutes,
-        ct._fivetran_synced
-    from {{ ref("stg_channel_traffic") }} as ct
+        ct.record_effective_start_timestamp,
+        ct.record_effective_end_timestamp,
+        ct.is_deleted
+    from {{ ref("stg_channel_traffic_hist") }} as ct
     left join {{ ref("country_codes_lookup") }} as cc on cc.country_code = ct.country_code
     left join {{ ref("traffic_source_lookup") }} as ts on ts.traffic_source_id = ct.traffic_source_id
 )
@@ -34,5 +37,5 @@ select
 from channel_traffic as ct
 where true
 {% if is_incremental() %}
-  and ct._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and ct.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}
