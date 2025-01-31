@@ -23,22 +23,42 @@ videos_with_calcs as (
                 ) as published_at_w_tz_appended,
         convert_timezone('America/Los_Angeles', published_at_w_tz_appended) as published_at
     from videos
+),
+all_data as (
+    select
+        id as video_id,
+        published_at,
+        snippet_channel_id as channel_id,
+        snippet_title as video_title,
+        nullif(snippet_description, '') as video_description,
+        snippet_category_id as category_id,
+        video_duration_in_seconds,
+        content_details_has_custom_thumbnail as has_custom_thumbnail,
+        parse_json(snippet_thumbnails) as video_thumbnail_json,
+        initcap(privacy_status) as privacy_status,
+        statistics_view_count as view_count,
+        statistics_like_count as like_count,
+        statistics_dislike_count as dislike_count,
+        statistics_comment_count as comment_count,
+        statistics_favorite_count as favorite_count,
+        _fivetran_synced
+    from videos_with_calcs
 )
 select
-    id as video_id,
+    video_id,
     published_at,
-    snippet_channel_id as channel_id,
-    snippet_title as video_title,
-    nullif(snippet_description, '') as video_description,
-    snippet_category_id as category_id,
+    channel_id,
+    video_title,
+    video_description,
+    category_id,
     video_duration_in_seconds,
-    content_details_has_custom_thumbnail as has_custom_thumbnail,
-    parse_json(snippet_thumbnails) as video_thumbnail_json,
-    initcap(privacy_status) as privacy_status,
-    statistics_view_count as view_count,
-    statistics_like_count as like_count,
-    statistics_dislike_count as dislike_count,
-    statistics_comment_count as comment_count,
-    statistics_favorite_count as favorite_count,
+    has_custom_thumbnail,
+    video_thumbnail_json,
+    privacy_status,
+    view_count,
+    like_count,
+    dislike_count,
+    comment_count,
+    favorite_count,
     _fivetran_synced
-from videos_with_calcs
+from all_data
