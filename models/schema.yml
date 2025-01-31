@@ -1560,15 +1560,12 @@ models:
         data_type: number
       - name: relative_retention_performance
         data_type: number
-      - name: _fivetran_synced
-        tests:
-          - not_null
-        data_type: timestamp_tz
+  
   - name: int_channel_basics
     description: Cleaned version of stg_channel_basics with country codes translated to names
     tests:
       - unique:
-          column_name: "video_id || '-' || calendar_date || '-' || live_or_on_demand || '-' || subscribed_status || '-' || country_code"
+          column_name: "id || '-' || record_effective_start_timestamp"
     columns:
       - name: channel_id
         description: The ID of the channel
@@ -1730,7 +1727,3 @@ models:
               min_value: 0
               strictly: false
         data_type: number
-      - name: _fivetran_synced
-        tests:
-          - not_null
-        data_type: timestamp_tz
