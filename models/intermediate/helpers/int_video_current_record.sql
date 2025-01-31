@@ -8,4 +8,4 @@
 
 select *
 from {{ ref("int_video") }}
-qualify row_number() over (partition by video_id order by _fivetran_synced desc) = 1
+where record_effective_end_timestamp is null

@@ -8,7 +8,7 @@
 
 with video as (
     select *
-    from {{ ref("stg_video") }}
+    from {{ ref("stg_video_hist") }}
 ),
 video_w_thumbnail_url as (
     -- get the highest res image available
@@ -18,7 +18,7 @@ video_w_thumbnail_url as (
         vtj.value:width::int as video_thumbail_resolution_width
     from video as v
         , lateral flatten(input => video_thumbnail_json) as vtj
-    qualify row_number() over (partition by v.video_id order by video_thumbail_resolution_width desc) = 1
+    qualify row_number() over (partition by v.video_id, v.record_effective_start_timestamp order by video_thumbail_resolution_width desc) = 1
 ),
 all_data as (
     select
@@ -39,7 +39,9 @@ all_data as (
         v.dislike_count,
         v.comment_count,
         v.favorite_count,
-        v._fivetran_synced,
+        v.record_effective_start_timestamp,
+        v.record_effective_end_timestamp,
+        v.is_deleted
     from video_w_thumbnail_url as v
     left join {{ ref("category_id_lookup") }} as cat on v.category_id = cat.category_id
 )
@@ -48,5 +50,5 @@ select
 from all_data ad
 where true
 {% if is_incremental() %}
-  and ad._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and ad.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

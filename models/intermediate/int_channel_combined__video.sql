@@ -16,6 +16,7 @@ video as (
 ),
 all_data as (
     select
+        cc.id,
         cc.channel_id,
         cc.video_id,
         v.video_title,
@@ -34,7 +35,9 @@ all_data as (
         cc.average_view_duration_in_seconds,
         cc.red_view_count,
         cc.red_view_watch_time_in_minutes,
-        cc._fivetran_synced,
+        cc.record_effective_start_timestamp,
+        cc.record_effective_end_timestamp,
+        cc.is_deleted
     from channel_combined as cc
     left join video as v on cc.video_id = v.video_id
 )
@@ -44,5 +47,5 @@ from all_data ad
 
 where true
 {% if is_incremental() %}
-  and ad._fivetran_synced > coalesce((select max(_fivetran_synced) from {{ this }}), '1900-01-01')
+  and ad.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}
