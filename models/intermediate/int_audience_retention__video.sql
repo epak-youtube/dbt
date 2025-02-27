@@ -1,7 +1,8 @@
 {{
     config(
         materialized = 'incremental',
-        full_refresh = false,
+        incremental_strategy = 'merge',
+        unique_key = ['id', 'record_effective_start_timestamp'],
         on_schema_change = 'fail'
         )
 }}
@@ -41,5 +42,5 @@ select
 from audience_retention__video as arv
 where true
 {% if is_incremental() %}
-  and arv.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
+  and coalesce(arv.record_effective_end_timestamp, current_timestamp) > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

@@ -1,7 +1,8 @@
 {{
     config(
         materialized = 'incremental',
-        full_refresh = false,
+        incremental_strategy = 'merge',
+        unique_key = ['id', 'record_effective_start_timestamp'],
         on_schema_change = 'fail'
         )
 }}
@@ -64,5 +65,5 @@ select
 from channel_traffic__video as ctv
 where true
 {% if is_incremental() %}
-  and ctv.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
+  and coalesce(ctv.record_effective_end_timestamp, current_timestamp) > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

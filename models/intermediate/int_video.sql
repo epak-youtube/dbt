@@ -1,7 +1,8 @@
 {{
     config(
         materialized = 'incremental',
-        full_refresh = false,
+        incremental_strategy = 'merge',
+        unique_key = ['video_id', 'record_effective_start_timestamp'],
         on_schema_change = 'fail'
         )
 }}
@@ -50,5 +51,5 @@ select
 from all_data ad
 where true
 {% if is_incremental() %}
-  and ad.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
+  and coalesce(ad.record_effective_end_timestamp, current_timestamp) > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}
