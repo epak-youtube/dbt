@@ -15,6 +15,7 @@
             'number_of_videos',
             'topic_ids'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )
 }}

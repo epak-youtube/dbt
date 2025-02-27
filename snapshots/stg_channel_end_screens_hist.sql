@@ -11,6 +11,7 @@
             'end_screen_element_impressions',
             'end_screen_element_click_rate'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )
 }}

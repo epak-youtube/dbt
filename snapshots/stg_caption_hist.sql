@@ -9,6 +9,7 @@
             'duration_seconds',
             'caption_text'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )
 }}
