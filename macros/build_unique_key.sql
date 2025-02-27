@@ -2,7 +2,7 @@
     md5(
         '{{ this.identifier }}' ||
         {% for column in columns %}
-            {{ 'coalesce(' ~ column ~ ', \'' ~ null_value ~ '\')' }}
+            {{ 'coalesce(' ~ column ~ '::text, \'' ~ null_value ~ '\')' }}
             {%- if not loop.last -%} || {% endif %}
         {% endfor %}
     )
