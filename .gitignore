@@ -4,3 +4,5 @@ dbt_packages/
 logs/
 .vscode/
 todo.txt
+env/
+.env
