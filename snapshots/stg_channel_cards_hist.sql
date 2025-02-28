@@ -12,6 +12,7 @@
             'card_teaser_impressions',
             'card_teaser_clicks'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )
 }}

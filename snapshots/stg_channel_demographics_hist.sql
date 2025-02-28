@@ -8,6 +8,7 @@
        check_cols = [
             'share_of_views_this_video_day'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )
 }}

@@ -9,6 +9,7 @@
             'percent_watch_ratio',
             'relative_retention_performance'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )
 }}

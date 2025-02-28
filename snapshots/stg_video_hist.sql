@@ -19,6 +19,7 @@
             'comment_count',
             'favorite_count'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )    
 }}

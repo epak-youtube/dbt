@@ -1,7 +1,8 @@
 {{
     config(
         materialized = 'incremental',
-        full_refresh = false,
+        incremental_strategy = 'merge',
+        unique_key = ['id', 'record_effective_start_timestamp'],
         on_schema_change = 'fail'
         )
 }}
@@ -37,12 +38,11 @@ with channel_basics as (
         cb.is_deleted
     from {{ ref("stg_channel_basic_hist") }} as cb
     left join {{ ref("country_codes_lookup") }} as cc on cc.country_code = cb.country_code
-    where cb.video_id is distinct from 'M8JBkd8KMJA'    -- has no match in the videos table and only 2 views so just removing
 )
 select
     *
 from channel_basics cb
 where true
 {% if is_incremental() %}
-  and cb.record_effective_start_timestamp > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
+  and coalesce(cb.record_effective_end_timestamp, current_timestamp) > coalesce((select max(record_effective_start_timestamp) from {{ this }}), '1900-01-01')
 {% endif %}

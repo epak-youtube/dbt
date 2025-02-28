@@ -26,6 +26,9 @@ models:
     intermediate:
       +materialized: table
       +database: REFINED
+    marts:
+      +materialized: table
+      +database: CURATED
 
 seeds:
   dbt_project:

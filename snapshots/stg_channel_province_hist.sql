@@ -11,6 +11,7 @@
             'average_view_duration_in_seconds',
             'average_view_duration_percentage'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )
 }}

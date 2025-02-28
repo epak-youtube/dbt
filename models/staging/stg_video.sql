@@ -31,16 +31,16 @@ all_data as (
         snippet_channel_id as channel_id,
         snippet_title as video_title,
         nullif(snippet_description, '') as video_description,
-        snippet_category_id as category_id,
+        try_to_number(snippet_category_id) as category_id,
         video_duration_in_seconds,
         content_details_has_custom_thumbnail as has_custom_thumbnail,
         parse_json(snippet_thumbnails) as video_thumbnail_json,
         initcap(privacy_status) as privacy_status,
-        statistics_view_count as view_count,
-        statistics_like_count as like_count,
-        statistics_dislike_count as dislike_count,
-        statistics_comment_count as comment_count,
-        statistics_favorite_count as favorite_count,
+        try_to_number(statistics_view_count)::int as view_count,
+        try_to_number(statistics_like_count)::int as like_count,
+        try_to_number(statistics_dislike_count)::int as dislike_count,
+        try_to_number(statistics_comment_count)::int as comment_count,
+        try_to_number(statistics_favorite_count)::int as favorite_count,
         _fivetran_synced
     from videos_with_calcs
 )

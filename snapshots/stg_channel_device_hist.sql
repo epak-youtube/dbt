@@ -13,6 +13,7 @@
             'red_view_count',
             'red_watch_time_in_minutes'
        ],
+       updated_at = '_fivetran_synced::timestampntz',
        hard_deletes = 'new_record'
    )
 }}
